@@ -11,11 +11,10 @@ def connect():
     
     ip = get_local_ip()    
     
-    params = urllib.urlencode({
+    params = {
         'reqFrom':'perfigo_login.jsp',
         'uri':'',
         'cm':'',
-        'userip':'\'' + ip + '\'',
         'session':'',
         'pm':'',
         'index':'1',
@@ -32,20 +31,24 @@ def connect():
         'password':'\'' + password + '\'',
         
         'provider':'OSU username'
-    })
+    }
+    
+    params['userip'] = ip
+    params["username"] = username
+    params["password"] = password
     
     print "IP is: " + ip
 
     # Connection request
-    h = httplib.HTTPSConnection("be4cas03.resnet.ohio-state.edu")   
+    h = httplib.HTTPSConnection("be4cas03.resnet.ohio-state.edu")     
     
-    h.request("GET", "/auth/perfigo_weblogin.jsp")    
-    
-    print h.getresponse().read()    
-    
-    h.request("POST", "/auth/perfigo_cm_validate.jsp", params, headers)
+    h.request("POST", "/auth/perfigo_cm_validate.jsp", urllib.urlencode(params), headers)
 
-    print h.getresponse().read()
+    h.getresponse().read()
+
+
+def test_connection():
+    connected = False    
     
     # Google test
     h2 = httplib.HTTPConnection("www.google.com")
@@ -56,9 +59,12 @@ def connect():
     
     # Test to see if a real reply from Google was recieved
     if not "ohio-state" in data:
-        print "Successfully Connected!"
+        print "Connected!"
+        connected = True
     else:
-        print "Connection failed"
+        print "No connection"
+        
+    return connected
 
 
 def get_local_ip():
@@ -76,17 +82,23 @@ def get_local_ip():
         
     return client
 
-# Start of program
 
+# Start of program
 username = raw_input("What is your OSU Name.#? ")
 password = raw_input("What is your OSU password? (Beware of those standing behind you) ")
+
 print ""
+
 cont = raw_input("Run continuously? (Y/n) ")
+
 print ""
 
 if cont.capitalize() == "Y":
     while True:
-        connect()
-        sleep(23 * 60 * 60) # 23 hours in seconds
+        if not test_connection():
+            connect()
+        
+        sleep(5.0)
 else:
     connect()
+    test_connection()
