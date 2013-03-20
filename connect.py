@@ -3,7 +3,7 @@
 
 import httplib, urllib
 import socket
-from time import sleep
+import time
 
 
 def connect():    
@@ -95,10 +95,11 @@ print ""
 
 if cont.capitalize() == "Y":
     while True:
+        print time.strftime("%H:%M")
         if not test_connection():
             connect()
         
-        sleep(5.0)
+        time.sleep(60.0)
 else:
     connect()
     test_connection()
