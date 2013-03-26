@@ -27,9 +27,6 @@ def connect():
         'guestUserNameLabel':'Guest ID',
         'guestPasswordLabel':'Password',
         
-        'username':'\'' + username + '\'',
-        'password':'\'' + password + '\'',
-        
         'provider':'OSU username'
     }
     
