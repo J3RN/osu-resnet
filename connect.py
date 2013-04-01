@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-import httplib, urllib, socket, time, sys
+import httplib, urllib, socket, time, sys, getopt
 
 
 def connect(ip, username, password):    
@@ -76,14 +76,40 @@ def get_local_ip():
     return client
 
 def main(argv=None):
-    username = raw_input("What is your OSU Name.#? ")
-    password = raw_input("What is your OSU password (Beware of those standing behind you)? ")
+    try:
+        opts, args = getopt.getopt(argv,"u:p:c",["username=","password="])
+    except getopt.GetoptError as err:
+        print str(err)
+        sys.exit(2)
+    
+    cont = False
+    username = ""
+    password = ""
+
+    given = [False, False, False]    
+    
+    for o, a in opts:
+        if o in ("-u", "--username"):
+            username = a
+            given[0] = True
+        elif o in ("-p", "--password"):
+            password = a
+            given[1] = True
+        elif o == "-c":
+            cont = True
+            given[2] = True
+    
+    if not given[0]:
+        username = raw_input("What is your OSU Name.#? ")
+        
+    if not given[1]:
+        password = raw_input("What is your OSU password (Beware of those standing behind you)? ")
     
     print ""
     
-    cont = raw_input("Run continuously [Y/n]? ")
-    
-    print ""
+    if not given[2]:
+        cont = raw_input("Run continuously [Y/n]? ")
+        print ""
     
     ip = get_local_ip() 
     
