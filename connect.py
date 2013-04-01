@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-import httplib, urllib
-import socket
-import time
+import httplib, urllib, socket, time, sys
 
 
-def connect(ip):    
+def connect(ip, username, password):    
     headers = {"Content-type":"application/x-www-form-urlencoded"}   
     
     params = {
@@ -77,26 +75,28 @@ def get_local_ip():
         
     return client
 
-
-# Start of program
-username = raw_input("What is your OSU Name.#? ")
-password = raw_input("What is your OSU password (Beware of those standing behind you)? ")
-
-print ""
-
-cont = raw_input("Run continuously [Y/n]? ")
-
-print ""
-
-ip = get_local_ip() 
-
-if cont[0].capitalize() == "Y":
-    while True:
-        print time.strftime("%H:%M")
-        if not test_connection():
-            connect(ip)
-        
-        time.sleep(60.0)
-else:
-    connect(ip)
-    test_connection()
+def main(argv=None):
+    username = raw_input("What is your OSU Name.#? ")
+    password = raw_input("What is your OSU password (Beware of those standing behind you)? ")
+    
+    print ""
+    
+    cont = raw_input("Run continuously [Y/n]? ")
+    
+    print ""
+    
+    ip = get_local_ip() 
+    
+    if cont[0].capitalize() == "Y":
+        while True:
+            print time.strftime("%H:%M")
+            if not test_connection():
+                connect(ip, username, password)
+            
+            time.sleep(60.0)
+    else:
+        connect(ip, username, password)
+        test_connection()
+    
+if __name__ == "__main__":
+    main(sys.argv[1:])
