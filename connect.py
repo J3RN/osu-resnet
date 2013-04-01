@@ -33,7 +33,7 @@ def connect(ip, username, password):
     print "IP is: " + ip
 
     # Connection request
-    h = httplib.HTTPSConnection("be4cas03.resnet.ohio-state.edu")     
+    h = httplib.HTTPSConnection("be4cas03.resnet.ohio-state.edu", timeout=5)     
     
     h.request("POST", "/auth/perfigo_cm_validate.jsp", urllib.urlencode(params), headers)
 
