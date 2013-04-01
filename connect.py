@@ -107,7 +107,7 @@ def main(argv=None):
     
     ip = get_local_ip() 
     
-    if cont[0].capitalize() == "Y":
+    if cont:
         while True:
             print time.strftime("%H:%M")
             if not test_connection():
