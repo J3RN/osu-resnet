@@ -6,10 +6,8 @@ import socket
 import time
 
 
-def connect():    
-    headers = {"Content-type":"application/x-www-form-urlencoded"}
-    
-    ip = get_local_ip()    
+def connect(ip):    
+    headers = {"Content-type":"application/x-www-form-urlencoded"}   
     
     params = {
         'reqFrom':'perfigo_login.jsp',
@@ -82,21 +80,23 @@ def get_local_ip():
 
 # Start of program
 username = raw_input("What is your OSU Name.#? ")
-password = raw_input("What is your OSU password? (Beware of those standing behind you) ")
+password = raw_input("What is your OSU password (Beware of those standing behind you)? ")
 
 print ""
 
-cont = raw_input("Run continuously? (Y/n) ")
+cont = raw_input("Run continuously [Y/n]? ")
 
 print ""
 
-if cont.capitalize() == "Y":
+ip = get_local_ip() 
+
+if cont[0].capitalize() == "Y":
     while True:
         print time.strftime("%H:%M")
         if not test_connection():
-            connect()
+            connect(ip)
         
         time.sleep(60.0)
 else:
-    connect()
+    connect(ip)
     test_connection()
