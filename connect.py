@@ -105,12 +105,6 @@ def main(argv=None):
     if not given[1]:
         password = raw_input("What is your OSU password (Beware of those standing behind you)? ")
     
-    print ""
-    
-    if not given[2]:
-        cont = raw_input("Run continuously [Y/n]? ")
-        print ""
-    
     ip = get_local_ip() 
     
     if cont[0].capitalize() == "Y":
