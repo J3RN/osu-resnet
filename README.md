@@ -1,4 +1,4 @@
-OSUResnetConnect
+OSUResnet
 ================
 
 There are two scripts in this project
