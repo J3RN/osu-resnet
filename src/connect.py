@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-import httplib, urllib, socket, time, sys, getopt
+import http.client as http
+import urllib, socket, time, sys, getopt
 
 
 def connect(ip, username, password):    
@@ -30,12 +31,14 @@ def connect(ip, username, password):
     params["username"] = username
     params["password"] = password
     
-    print "IP is: " + ip
+    params = urllib.parse.urlencode(params)
+
+    print("IP is: " + ip)
 
     # Connection request
-    h = httplib.HTTPSConnection("be4cas03.resnet.ohio-state.edu", timeout=5)     
+    h = http.HTTPSConnection("be4cas03.resnet.ohio-state.edu", timeout=5)     
     
-    h.request("POST", "/auth/perfigo_cm_validate.jsp", urllib.urlencode(params), headers)
+    h.request("POST", "/auth/perfigo_cm_validate.jsp", params, headers)
 
     h.getresponse().read()
 
@@ -52,10 +55,10 @@ def test_connection():
     
     # Test to see if a real reply from Google was recieved
     if not "ohio-state" in data:
-        print "Connected!"
+        print("Connected!")
         connected = True
     else:
-        print "No connection"
+        print("No connection")
         
     return connected
 
@@ -79,7 +82,7 @@ def main(argv=None):
     try:
         opts, args = getopt.getopt(argv,"u:p:c",["username=","password="])
     except getopt.GetoptError as err:
-        print str(err)
+        print(str(err))
         sys.exit(2)
     
     cont = False
@@ -100,16 +103,16 @@ def main(argv=None):
             given[2] = True
     
     if not given[0]:
-        username = raw_input("What is your OSU Name.#? ")
+        username = input("What is your OSU Name.#? ")
         
     if not given[1]:
-        password = raw_input("What is your OSU password (Beware of those standing behind you)? ")
+        password = input("What is your OSU password (Beware of those standing behind you)? ")
     
     ip = get_local_ip() 
     
     if cont:
         while True:
-            print time.strftime("%H:%M")
+            print(time.strftime("%H:%M"))
             if not test_connection():
                 connect(ip, username, password)
             

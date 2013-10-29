@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-import httplib, urllib
-import time
+import httplib, urllib, time
 
 
 def connect(ip):    
@@ -32,7 +31,7 @@ def connect(ip):
     params["password"] = password
 
     # Connection request
-    h = httplib.HTTPSConnection("be4cas03.resnet.ohio-state.edu")     
+    h = httplib.HTTPSConnection("be4cas01.studentaffairs.ohio-state.edu", timeout=5)     
     
     h.request("POST", "/auth/perfigo_cm_validate.jsp", urllib.urlencode(params), headers)
 
